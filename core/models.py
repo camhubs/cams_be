@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Content(models.Model):
-    name = models.TextField()
+    name = models.TextField(unique=True)
     href = models.TextField()
     logo_alt = models.TextField()
     logo = models.TextField()
