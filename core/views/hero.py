@@ -1,12 +1,26 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from django.shortcuts import get_object_or_404
 from ..models import Hero, Tag, Subcategory, Footer, FooterSubcategory
-from ..serializers import HeroSerializer
+from ..serializers import HeroSerializer, HeroWithLanguageSerializer
 
 class HeroViewSet(viewsets.ModelViewSet):
     queryset = Hero.objects.all()
     serializer_class = HeroSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve_with_language':
+            return HeroWithLanguageSerializer
+        return self.serializer_class
+
+    @action(detail=True, methods=['get'], url_path='with-language', permission_classes=[AllowAny])
+    def retrieve_with_language(self, request, pk=None):
+        hero = get_object_or_404(Hero, pk=pk)
+        serializer = self.get_serializer(hero)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -35,7 +49,8 @@ class HeroViewSet(viewsets.ModelViewSet):
                 Subcategory.objects.create(
                     tag=tag,
                     name=subcategory_data.get('name'),
-                    url=subcategory_data.get('url')
+                    href=subcategory_data.get('href'),
+                    display_name=subcategory_data.get('display_name')
                 )
         
         # Create footer
@@ -86,7 +101,8 @@ class HeroViewSet(viewsets.ModelViewSet):
                     Subcategory.objects.create(
                         tag=tag,
                         name=subcategory_data.get('name'),
-                        url=subcategory_data.get('url')
+                        href=subcategory_data.get('href'),
+                        display_name=subcategory_data.get('display_name')
                     )
 
         # Update footer
