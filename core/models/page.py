@@ -1,7 +1,7 @@
 from django.db import models
 
 class ModelPage(models.Model):
-    language_name = models.CharField(max_length=255)
+    tag = models.CharField(max_length=255, unique=True)
     home_name = models.CharField(max_length=255)
     likes = models.CharField(max_length=255)
     hottest = models.CharField(max_length=255)
@@ -29,4 +29,4 @@ class ModelPage(models.Model):
     footer_button = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.language_name 
+        return self.tag 

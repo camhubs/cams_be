@@ -16,6 +16,11 @@ class HeroViewSet(viewsets.ModelViewSet):
             return HeroWithLanguageSerializer
         return self.serializer_class
 
+    @action(detail=False, methods=['get'], url_path='url-tags', permission_classes=[AllowAny])
+    def get_url_tags(self, request):
+        url_tags = Hero.objects.values_list('url_tag', flat=True).distinct()
+        return Response(list(url_tags))
+
     @action(detail=False, methods=['get'], url_path='by-url-tag/(?P<url_tag>[^/.]+)', permission_classes=[AllowAny])
     def retrieve_by_url_tag(self, request, url_tag=None):
         hero = get_object_or_404(Hero, url_tag=url_tag)
