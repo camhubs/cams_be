@@ -12,13 +12,13 @@ class HeroViewSet(viewsets.ModelViewSet):
     serializer_class = HeroSerializer
 
     def get_serializer_class(self):
-        if self.action == 'retrieve_with_language':
+        if self.action == 'retrieve_by_url_tag':
             return HeroWithLanguageSerializer
         return self.serializer_class
 
-    @action(detail=True, methods=['get'], url_path='with-language', permission_classes=[AllowAny])
-    def retrieve_with_language(self, request, pk=None):
-        hero = get_object_or_404(Hero, pk=pk)
+    @action(detail=False, methods=['get'], url_path='by-url-tag/(?P<url_tag>[^/.]+)', permission_classes=[AllowAny])
+    def retrieve_by_url_tag(self, request, url_tag=None):
+        hero = get_object_or_404(Hero, url_tag=url_tag)
         serializer = self.get_serializer(hero)
         return Response(serializer.data)
 
@@ -31,6 +31,7 @@ class HeroViewSet(viewsets.ModelViewSet):
             'content_title': data.get('content_title'),
             'language': data.get('language'),
             'tag_title': data.get('tag_title'),
+            'url_tag': data.get('url_tag'),
             'website_description': data.get('website_description')
         }
         
@@ -82,6 +83,7 @@ class HeroViewSet(viewsets.ModelViewSet):
         instance.content_title = data.get('content_title', instance.content_title)
         instance.language = data.get('language', instance.language)
         instance.tag_title = data.get('tag_title', instance.tag_title)
+        instance.url_tag = data.get('url_tag', instance.url_tag)
         instance.website_description = data.get('website_description', instance.website_description)
         instance.save()
 

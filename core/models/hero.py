@@ -7,6 +7,7 @@ class Hero(models.Model):
     content_title = models.CharField(max_length=255)
     language = models.CharField(max_length=10)
     tag_title = models.CharField(max_length=255)
+    url_tag = models.CharField(max_length=255, unique=True)
     website_description = models.TextField()
 
     def __str__(self):

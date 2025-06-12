@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Hero, Tag, Subcategory, Footer, FooterSubcategory, Content
+from .models import Hero, Tag, Subcategory, Footer, FooterSubcategory, Content, ModelPage
 
 class SubcategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,10 +32,9 @@ class HeroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hero
         fields = [
-            'id',
-            'title', 'description', 'image_url',
-            'content_title', 'language', 'tag_title', 'tags',
-            'footer', 'website_description'
+            'id', 'title', 'description', 'image_url',
+            'content_title', 'language', 'tag_title', 'url_tag',
+            'tags', 'footer', 'website_description'
         ]
 
 class HeroWithLanguageSerializer(serializers.ModelSerializer):
@@ -47,8 +46,8 @@ class HeroWithLanguageSerializer(serializers.ModelSerializer):
         model = Hero
         fields = [
             'id', 'title', 'description', 'image_url',
-            'content_title', 'language', 'tag_title', 'tags',
-            'footer', 'website_description', 'language_content'
+            'content_title', 'language', 'tag_title', 'url_tag',
+            'tags', 'footer', 'website_description', 'language_content'
         ]
 
     def get_language_content(self, obj):
@@ -60,4 +59,9 @@ class HeroWithLanguageSerializer(serializers.ModelSerializer):
 class ContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
+        fields = '__all__'
+
+class ModelPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModelPage
         fields = '__all__'
