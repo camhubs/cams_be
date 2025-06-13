@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import ContentViewSet, HeroViewSet
 from .views.page import ModelPageViewSet
 from .views.model import ModelViewSet
+from .views.model_hero_view import ModelHeroDetailView
 
 router = DefaultRouter()
 router.register(r'content', ContentViewSet)
@@ -15,4 +16,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('model-hero/', ModelHeroDetailView.as_view(), name='model-hero-detail'),
 ]

@@ -89,10 +89,10 @@ class ModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Model
         fields = [
-            'id', 'nikname', 'name', 'name_url', 'about_model',
+            'id', 'nikname', 'name', 'about_model',
             'statistics', 'tags', 'footer_button_url',
             'sign_up_here_url', 'popular_times', 'hero_url',
-            'last_updated'
+            'last_updated', "avatar"
         ]
 
     def create(self, validated_data):

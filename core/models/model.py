@@ -3,13 +3,12 @@ from django.db import models
 class Model(models.Model):
     nikname = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    name_url = models.CharField(max_length=255)
     about_model = models.TextField()
     footer_button_url = models.CharField(max_length=255)
     sign_up_here_url = models.CharField(max_length=255)
     hero_url = models.CharField(max_length=255)
     last_updated = models.CharField(max_length=255)
-
+    avatar = models.CharField(max_length=255, default='')
     def __str__(self):
         return self.name
 
