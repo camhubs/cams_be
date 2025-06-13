@@ -4,7 +4,7 @@ from .tag import Tag
 from .subcategory import Subcategory
 from .footer import Footer, FooterSubcategory
 from .page import ModelPage
-from .model import Model, ModelStatistic, ModelTag, ModelPopularTime
+from .model import Model, ModelStatistic, ModelTag
 
 __all__ = [
     'Content',
@@ -16,6 +16,5 @@ __all__ = [
     'ModelPage',
     'Model',
     'ModelStatistic',
-    'ModelTag',
-    'ModelPopularTime'
+    'ModelTag'
 ] 

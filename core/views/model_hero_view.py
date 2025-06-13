@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from core.models.model import Model, ModelStatistic, ModelTag, ModelPopularTime
+from core.models.model import Model, ModelStatistic, ModelTag
 from core.models.hero import Hero
 from core.models.footer import Footer, FooterSubcategory
 from core.models.content import Content
@@ -51,14 +51,11 @@ class ModelHeroDetailView(APIView):
             # Get Model data by nikname
             model = get_object_or_404(Model, nikname=nikname)
             model_data = {
+                'id': model.id,
                 'nikname': model.nikname,
                 'name': model.name,
-                'about_model': model.about_model,
-                'footer_button_url': model.footer_button_url,
-                'sign_up_here_url': model.sign_up_here_url,
-                'hero_url': model.hero_url,
-                'last_updated': model.last_updated,
                 'avatar': model.avatar,
+                'about_model': model.about_model,
                 'statistics': [
                     {
                         'name': stat.name,
@@ -71,13 +68,11 @@ class ModelHeroDetailView(APIView):
                         'tag_name': tag.tag_name
                     } for tag in model.tags.all()
                 ],
-                'popular_times': [
-                    {
-                        'day': time.day,
-                        'time': time.time,
-                        'rating': time.rating
-                    } for time in model.popular_times.all()
-                ]
+                'footer_button_url': model.footer_button_url,
+                'sign_up_here_url': model.sign_up_here_url,
+                'popular_times': model.popular_times,
+                'hero_url': model.hero_url,
+                'last_updated': model.last_updated
             }
 
             # Add model page content
