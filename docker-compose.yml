@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+      - "80:80"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/cams_db
+      - REDIS_URL=redis://redis:6379/0
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=camsbe.settings
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m celery -A camsbe worker -l INFO
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/cams_db
+      - REDIS_URL=redis://redis:6379/0
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=camsbe.settings
+
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=cams_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
